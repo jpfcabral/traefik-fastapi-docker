@@ -8,7 +8,13 @@ services:
       - traefik.http.routers.app-http.entrypoints=http
       - traefik.http.routers.app-http.rule=Host(`${URL}`)
       - traefik.docker.network=traefik-public
-    
+      - traefik.http.routers.app-https.entrypoints=https
+      - traefik.http.routers.app-https.rule=Host(`${URL}`)
+      - traefik.http.routers.app-https.tls=true
+      - traefik.http.routers.app-https.tls.certresolver=le
+      - traefik.http.middlewares.https-redirect.redirectscheme.scheme=https
+      - traefik.http.middlewares.https-redirect.redirectscheme.permanent=https
+      - traefik.http.routers.app-http.middlewares=https-redirect
     networks:
       - traefik-public
 

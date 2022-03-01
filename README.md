@@ -55,5 +55,29 @@ $ sudo chmod +x /usr/local/bin/docker-compose
 3. Test the installation.
 
 ```
-docker-compose --version
+$ docker-compose --version
+```
+
+## Running services
+
+### Run Traefik
+
+```
+$ docker-compose -f docker-compose.traefik.yml up -d
+```
+
+### Run our service
+
+To run our service, we will need to create a `.env` file to set default values, like:
+
+```
+# .env
+
+URL=myurl.com
+EMAIL=myemail@gmail.com
+```
+So we can run with:
+
+```
+docker-compose -f docker-compose.yml up -d
 ```

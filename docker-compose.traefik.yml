@@ -7,21 +7,30 @@ services:
       - "80:80"
       # The Web UI (enabled by --api.insecure=true)
       - "8080:8080"
+      - "443:443"
     restart: always
     volumes:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik-public-certificates:/certificates
     # Enables the web UI and tells Traefik to listen to docker
     command: 
     - --providers.docker
     - --providers.docker.exposedbydefault=false
     - --entrypoints.http.address=:80
+    - --entrypoints.https.address=:443
+    - --certificatesresolvers.le.acme.email=${EMAIL}
+    - --certificatesresolvers.le.acme.storage=/certificates/acme.json
+    - --certificatesresolvers.le.acme.tlschallenge=true
     - --api.insecure=true 
     - --accesslog
     - --log
 
     networks:
       - traefik-public
+
+volumes:
+  traefik-public-certificates:
 
 networks:
   traefik-public:
